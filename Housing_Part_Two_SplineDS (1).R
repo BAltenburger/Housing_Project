@@ -46,7 +46,8 @@ bc <- boxcox(model_raw)
 durbinWatsonTest(model_raw) # Serial Correlation
 plot(model_raw$residuals)
 lines(model_raw$residuals)
-coeftest(model_raw, vcov = NW_VCOV(model_raw, type = 'HC1'))
+coeftest(model_raw, vcov = NeweyWest(model_raw, lag = 12))
+
 ### Boxcox Transformation Model
 optimal_transform <- bc$x[which.max(bc$y)]
 optimal_transform
@@ -54,4 +55,4 @@ model_transform <- lm((index_new)**optimal_transform ~ (pop_new) + (gdp_new) + (
 summary(model_transform)
 plot(model_transform)
 durbinWatsonTest(model_transform) # Serial Correlation
-coeftest(model_transform, vcov = NW_VCOV(model_raw, type = 'HC1'))
+coeftest(model_transform, vcov = NeweyWest(model_transform, lag = 12))
